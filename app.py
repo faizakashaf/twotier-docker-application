@@ -1,14 +1,20 @@
 import os
 import psycopg2
 from flask import Flask, request, jsonify, render_template
+from dotenv import load_dotenv  
+
+# Load environment variables from .env file
+load_dotenv()
+
+
 
 app = Flask(__name__)
 
 # Get PostgreSQL credentials from environment variables
-DB_HOST = os.getenv('POSTGRES_HOST', 'localhost')
-DB_NAME = os.getenv('POSTGRES_DB', 'messages_db')
-DB_USER = os.getenv('POSTGRES_USER', 'postgres')
-DB_PASS = os.getenv('POSTGRES_PASSWORD', 'faiza_pwd')
+DB_HOST = os.getenv('POSTGRES_HOST')
+DB_NAME = os.getenv('POSTGRES_DB')
+DB_USER = os.getenv('POSTGRES_USER')
+DB_PASS = os.getenv('POSTGRES_PASSWORD')
 
 def get_db_connection():
     """Establish a connection to PostgreSQL with error handling."""
