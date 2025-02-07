@@ -1,11 +1,11 @@
 import os
 import psycopg2
 from flask import Flask, request, jsonify, render_template
-from dotenv import load_dotenv  
+from dotenv.main import load_dotenv
+ 
 
 # Load environment variables from .env file
 load_dotenv()
-
 
 
 app = Flask(__name__)
@@ -94,4 +94,5 @@ def submit():
 
 if __name__ == '__main__':
     init_db()  # Initialize database
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
+

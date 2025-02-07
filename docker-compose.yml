@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  backend:
+    image: faizakashaf12/flask-app:latest
+    container_name: flask-app
+    ports:
+      - "5000:5000"
+    environment:
+      - POSTGRES_HOST=psql
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=messages_db
+      - POSTGRES_PASSWORD=faiza_pwd
+    networks:
+    - twotier
+    depends_on:
+      postgres:
+        condition: service_healthy  
+    restart: always
+  postgres:
+    image: postgres:latest
+    container_name: psql
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=faiza_pwd
+      - POSTGRES_DB=messages_db
+    
+    volumes:
+      - pgdata:/var/lib/postgresql/data 
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql 
+    networks:
+      - twotier
+
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+    restart: always  
+
+volumes:
+  pgdata:
+
+networks:
+  twotier:
